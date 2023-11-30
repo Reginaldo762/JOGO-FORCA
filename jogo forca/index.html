@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jogo da Forca</title>
+<style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+</style>
+</head>
+<body>
+<h1>Jogo da Forca</h1>
+<p id="word-display"></p>
+<p id="error-count">Erros restantes: 5</p>
+<input type="text" id="guess-input" placeholder="Digite uma letra">
+<button onclick="guessLetter()">Enviar</button>
+ 
+  <script>
+   
+    const palavras = ["abacaxi", "abobora", "abobrinha", "acerola", "alface",
+  "alho", "ameixa", "banana", "batata", "beterraba",
+  "brocolis", "caju", "cenoura", "cereja", "chuchu",
+  "couve", "damasco", "espinafre", "framboesa", "goiaba",
+  "kiwi", "laranja", "limao", "maca", "mamao",
+  "manga", "melancia", "melao", "morango", "nectarina",
+  "pepino", "pera", "pessego", "pimentao", "pimenta",
+  "pitanga", "repolho", "rabanete", "rucula", "tomate",
+  "uva", "vagem", "abacate", "abacaxi", "abobora",
+  "abobrinha", "acerola", "alface", "alho", "ameixa"];
+ 
+    let palavraAtual = "";
+    let palavraEscondida = [];
+    let errosRestantes = 5;
+    let pontos = 0;
+ 
+   
+    function iniciarJogo() {
+     
+      palavraAtual = palavras.pop().toLowerCase();
+ 
+      palavraEscondida = Array(palavraAtual.length).fill('_');
+ 
+      atualizarExibicao();
+ 
+      errosRestantes = 5;
+      atualizarErrosRestantes();
+    }
+ 
+    function atualizarExibicao() {
+      document.getElementById('word-display').innerText = palavraEscondida.join(' ');
+    }
+ 
+    function atualizarErrosRestantes() {
+      document.getElementById('error-count').innerText = `Erros restantes: ${errosRestantes}`;
+    }
+ 
+    function verificarLetra(letra) {
+      letra = letra.toLowerCase();
+      if (palavraAtual.includes(letra)) {
+        
+        for (let i = 0; i < palavraAtual.length; i++) {
+          if (palavraAtual[i] === letra) {
+            palavraEscondida[i] = letra;
+          }
+        }
+        atualizarExibicao();
+ 
+        if (!palavraEscondida.includes('_')) {
+          
+          alert(`Parabéns! Você acertou a palavra. Pontuação: ${pontos + 100}`);
+          pontos += 100;
+          iniciarJogo();
+        }
+      } else {
+   
+        errosRestantes--;
+        atualizarErrosRestantes();
+ 
+     
+        if (errosRestantes === 0) {
+          alert(`Game Over! A palavra era: ${palavraAtual}. Pontuação: ${pontos}`);
+          iniciarJogo();
+        }
+      }
+    }
+ 
+    function guessLetter() {
+      const inputElement = document.getElementById('guess-input');
+      const letra = inputElement.value.trim();
+ 
+      if (letra.length === 1 && letra.match(/[a-z]/i)) {
+     
+        verificarLetra(letra);
+      } else {
+        alert('Por favor, digite uma única letra válida.');
+      }
+ 
+    
+      inputElement.value = '';
+    }
+ 
+    window.onload = iniciarJogo;
+    
+function adicionarPontos() {
+  pontos += 100;
+  console.log(`Você ganhou 100 pontos! Pontuação total: ${pontos}`);
+}
+adicionarPontos();
+
+adicionarPontos();
+
+</script>
+</body>
+</html>
